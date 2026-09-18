@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Website, AI & Transformasi Digital Pendidikan Islam</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emeraldCustom: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        },
+                        islamicGold: '#D4AF37',
+                        techDark: '#0B132B',
+                        techCardDark: '#1C2541',
+                        techAccent: '#3A506B'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for inner container panels without breaking page layout */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #059669;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
+
+        /* Prevent outer vertical scrollbar completely to maintain app feel */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass-card {
+            background: rgba(28, 37, 65, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Pulse animation for active node */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-subtle {
+            animation: subtlePulse 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 dark:bg-techDark text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300 h-screen flex flex-col">
+
+    <!-- TOP HEADER NAVBAR -->
+    <header class="h-16 bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 px-4 md:px-6 flex items-center justify-between shrink-0 z-30 shadow-sm">
+        <div class="flex items-center space-x-3">
+            <button id="mobileMenuBtn" onclick="toggleSidebar()" class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-500/20">
+                <i class="fa-solid fa-kaaba text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-base md:text-lg leading-tight bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-600 bg-clip-text text-transparent">
+                    Literasi Digital & Peradaban
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+                    Website, AI & Transformasi Digital Pendidikan Islam • OBE / PBL
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Tools: Progress, Dark Mode, Audio Toggle -->
+        <div class="flex items-center space-x-2 md:space-x-4">
+            <!-- Progress Pill -->
+            <div class="hidden sm:flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+                <i class="fa-solid fa-graduation-cap text-emerald-500 text-xs"></i>
+                <span id="progressText" class="text-xs font-semibold text-slate-700 dark:text-slate-300">Bab 1/8</span>
+                <div class="w-16 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-500 h-full transition-all duration-300 w-[12.5%]"></div>
+                </div>
+            </div>
+
+            <!-- Sound Toggle Button -->
+            <button id="soundBtn" onclick="toggleSound()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Toggle Sound Effect">
+                <i id="soundIcon" class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+
+            <!-- Theme Toggle Button -->
+            <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors" title="Toggle Dark/Light Mode">
+                <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER (Viewport Fit) -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="absolute md:relative z-20 w-72 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-lg md:shadow-none">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> Daftar Modul Pembelajaran
+                </span>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1.5" id="navMenuList">
+                <!-- Nav items generated by JS -->
+            </nav>
+
+            <!-- Course Meta Info Footer -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                <div class="flex items-center space-x-3 text-xs text-slate-500 dark:text-slate-400">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                        S7
+                    </div>
+                    <div>
+                        <p class="font-semibold text-slate-700 dark:text-slate-300">Semester 7 • Tarbiyah</p>
+                        <p class="text-[10px]">OBE + PBL + Design Thinking</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- BACKDROP FOR MOBILE SIDEBAR -->
+        <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-10 hidden md:hidden"></div>
+
+        <!-- MAIN CONTENT PANEL (Internal Scroll Only) -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50/50 dark:bg-techDark/50 relative">
+            
+            <!-- MODULE VIEW HOLDER -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8" id="moduleContainer">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+
+            <!-- BOTTOM FIXED NAVIGATION BAR -->
+            <footer class="h-16 bg-white/90 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 z-20">
+                <button id="prevBtn" onclick="prevModule()" class="flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 text-slate-700 dark:text-slate-300 font-medium text-xs sm:text-sm transition-all disabled:opacity-40 disabled:hover:bg-slate-100 disabled:hover:text-slate-700 cursor-pointer">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span class="hidden sm:inline">Sebelumnya</span>
+                </button>
+
+                <div class="text-center px-2">
+                    <span id="currentModuleBadge" class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
+                        Modul 1 Dari 8
+                    </span>
+                    <span id="currentModuleTitle" class="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-100 truncate max-w-[180px] sm:max-w-xs md:max-w-md inline-block">
+                        Orientasi Perkuliahan
+                    </span>
+                </div>
+
+                <button id="nextBtn" onclick="nextModule()" class="flex items-center space-x-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/20">
+                    <span class="hidden sm:inline">Selanjutnya</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </footer>
+        </main>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-20 right-6 bg-slate-900 text-white dark:bg-emerald-600 dark:text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 opacity-0 pointer-events-none transition-all duration-300 z-50 transform translate-y-4 text-xs md:text-sm">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 dark:text-white text-base"></i>
+        <span id="toastMessage">Pesan notifikasi di sini...</span>
+    </div>
+
+    <script>
+        // Web Audio API Synthesizer (No external MP3 files needed)
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
+            }
+
+            playTab() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.04); // E5
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.1);
+            }
+
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime + idx * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.06 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + idx * 0.06);
+                    osc.stop(this.ctx.currentTime + idx * 0.06 + 0.2);
+                });
+            }
+
+            playError() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(140, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.2);
+            }
+        }
+
+        const sfx = new SoundFX();
+
+        // Modules Content Data
+        const modulesData = [
+            {
+                id: "orientation",
+                badge: "ORIENTASI & OBE",
+                title: "Infrastruktur Peradaban Digital",
+                icon: "fa-earth-asia",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <!-- Hero Header Card -->
+                        <div class="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-emerald-900 via-slate-900 to-teal-950 text-white relative overflow-hidden shadow-xl border border-emerald-500/20">
+                            <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-emerald-400 pointer-events-none">
+                                <i class="fa-solid fa-mosque"></i>
+                            </div>
+                            <span class="px-3 py-1 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 rounded-full text-xs font-bold tracking-wider uppercase inline-flex items-center gap-2 mb-3">
+                                <i class="fa-solid fa-quote-left"></i> Filosofi Pembuka
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-extrabold leading-tight mb-3">
+                                "Website Bukan Sekadar Halaman Internet, Tetapi Infrastruktur Peradaban"
+                            </h2>
+                            <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
+                                Bayangkan jika lembaga keilmuan Islam, sekolah, madrasah, dan sarana dakwah tidak memiliki kehadiran digital yang berdaulat. Ruang kosong tersebut akan dipenuhi oleh narasi yang acak dan tak terverifikasi.
+                            </p>
+                        </div>
+
+                        <!-- Thought Experiment Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl glass-card border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-rose-500 text-2xl mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base mb-2">Simulasi Realitas Tanpa Website Islam</h3>
+                                <ul class="text-xs md:text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                                    <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i> Perpustakaan manuskrip kuno terisolasi secara fisik.</li>
+                                    <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i> Layanan pendidikan kampus/pesantren lumpuh dari jangkauan global.</li>
+                                    <li class="flex items-start gap-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i> Dakwah kehilangan panggung algoritma modern.</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
+                                <div class="text-emerald-600 dark:text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-circle-question"></i></div>
+                                <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base mb-2">Refleksi Kritis Mahasiswa</h3>
+                                <blockquote class="text-xs md:text-sm text-slate-700 dark:text-slate-300 italic border-l-4 border-emerald-500 pl-3 py-1">
+                                    "Jika ilmu Islam, nilai-nilai pendidikan, dan kebenaran dakwah tidak hadir di dunia digital, siapa yang akan mengisi ruang hampa tersebut?"
+                                </blockquote>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-3 font-medium">
+                                    — Pertanyaan Fondasional Semester 7 Program Studi Pendidikan Islam.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Learning Outcomes (OBE Framework) -->
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base md:text-lg mb-4 flex items-center gap-2 text-slate-800 dark:text-slate-100">
+                                <i class="fa-solid fa-bullseye text-emerald-500"></i> Capaian Pembelajaran Lulusan (OBE Framework)
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50">
+                                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">
+                                        <i class="fa-solid fa-brain"></i> Knowledge (Pengetahuan)
+                                    </span>
+                                    <p class="text-xs text-slate-600 dark:text-slate-300">Memahami arsitektur web modern, AI, standar W3C/WCAG, serta sinergi teknologi dengan transformasi pendidikan Islam.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50">
+                                    <span class="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider block mb-1">
+                                        <i class="fa-solid fa-wrench"></i> Skill (Keterampilan)
+                                    </span>
+                                    <p class="text-xs text-slate-600 dark:text-slate-300">Merancang UI/UX, menerapkan Prompt Engineering AI, SEO optimization, dan membangun prototype portal pendidikan responsif.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50">
+                                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-1">
+                                        <i class="fa-solid fa-seedling"></i> Attitude (Sikap)
+                                    </span>
+                                    <p class="text-xs text-slate-600 dark:text-slate-300">Berpikir kritis, inovatif, memegang teguh etika data (UU PDP & Fiqih Informasi), dan bertanggung jawab dalam syiar ilmu.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab1",
+                badge: "BAGIAN 1",
+                title: "Website Sebagai Peradaban Digital",
+                icon: "fa-globe",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-xl font-bold mb-2 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-diagram-project text-emerald-500"></i> Website: Lebih Dari Sekadar Kode
+                            </h2>
+                            <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Secara filosofis, website modern bertindak sebagai <strong>simpul konvergensi peradaban</strong> yang menghubungkan tiga pilar utama kehidupan manusia: Ilmu, Bisnis/Ekonomi, dan Kemasyarakatan.
+                            </p>
+
+                            <!-- Flow Visualizer -->
+                            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-center my-4">
+                                <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-3 tracking-wider uppercase">Skema Konvergensi Peradaban Digital</div>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-200 dark:border-slate-600">
+                                        <i class="fa-solid fa-book-quran text-emerald-500 text-base mb-1 block"></i>
+                                        <span class="font-bold block">ILMU</span>
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400">Pendidikan & Repository</span>
+                                    </div>
+                                    <div class="p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-200 dark:border-slate-600">
+                                        <i class="fa-solid fa-chart-line text-indigo-500 text-base mb-1 block"></i>
+                                        <span class="font-bold block">BISNIS</span>
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400">Ekonomi & Halal Hub</span>
+                                    </div>
+                                    <div class="p-3 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-slate-200 dark:border-slate-600">
+                                        <i class="fa-solid fa-users text-teal-500 text-base mb-1 block"></i>
+                                        <span class="font-bold block">SOSIAL</span>
+                                        <span class="text-[10px] text-slate-500 dark:text-slate-400">Komunitas & Dakwah</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 pt-2 border-t border-slate-200 dark:border-slate-700 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                    <i class="fa-solid fa-arrow-down mb-1 block"></i>
+                                    PERADABAN DIGITAL ISLAM MODERN
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Web Evolution Timeline -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-4 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-timeline text-emerald-500"></i> Evolusi Teknologi Web (1.0 ke 4.0)
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-700 dark:text-slate-300">1991 - 2003</span>
+                                    <h4 class="font-bold text-sm text-emerald-600 dark:text-emerald-400 mt-2">Web 1.0</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">Static & Read-Only</p>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-2">Situs profil statis, informasi satu arah tanpa interaksi langsung pengguna.</p>
+                                </div>
+                                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-700 dark:text-slate-300">2004 - 2014</span>
+                                    <h4 class="font-bold text-sm text-indigo-600 dark:text-indigo-400 mt-2">Web 2.0</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">Social & Read-Write</p>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-2">Media sosial, forum interaktif, LMS madrasah, dan user-generated content.</p>
+                                </div>
+                                <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-slate-700 dark:text-slate-300">2015 - 2022</span>
+                                    <h4 class="font-bold text-sm text-teal-600 dark:text-teal-400 mt-2">Web 3.0</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">Semantic & Personal</p>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-2">Rekomendasi terpersonalisasi, asisten AI awal, dan desentralisasi data.</p>
+                                </div>
+                                <div class="p-3 rounded-xl border border-emerald-500/50 bg-emerald-500/10 dark:bg-emerald-950/30">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-500 text-white rounded">ERA SEKARANG</span>
+                                    <h4 class="font-bold text-sm text-emerald-600 dark:text-emerald-300 mt-2">Web 4.0</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-semibold">Intelligent Web</p>
+                                    <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-2">Integrasi Agen AI otonom, analisis emosi, rekomendasi materi pembelajaran saintifik presisi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Case Study Critical Analysis -->
+                        <div class="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50">
+                            <h3 class="font-bold text-sm md:text-base text-amber-800 dark:text-amber-300 mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-microscope"></i> Studi Kasus Analisis Kritis
+                            </h3>
+                            <p class="text-xs md:text-sm text-slate-700 dark:text-slate-300 mb-3">
+                                <strong>Skenario:</strong> Sebuah Sekolah Islam Terpadu memiliki website resmi, namun hanya berisi galeri foto kegiatan tahunan. Tidak ada update berkala, tidak tersedia silabus materi, dan tidak memiliki portal layanan siswa.
+                            </p>
+                            <div class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-amber-200 dark:border-amber-700 text-xs text-slate-600 dark:text-slate-300">
+                                <span class="font-bold text-amber-600 dark:text-amber-400 block mb-1">Pertanyaan Evaluasi:</span>
+                                Apakah website tersebut dapat dikategorikan berhasil sebagai infrastruktur peradaban digital?
+                                <br><span class="italic text-slate-500 dark:text-slate-400 mt-1 block">→ Belum. Website tersebut baru sebatas "brosur digital statis" (Web 1.0) dan gagal membangun ekosistem ilmu interaktif maupun solusi layanan.</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab2",
+                badge: "BAGIAN 2",
+                title: "Website Thinking & Problem Solving",
+                icon: "fa-brain",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40">
+                                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase">Mindset Pemula</span>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-1">"Bagaimana cara membuat website?"</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Berfokus pada tools, koding teknis, dan bahasa pemograman tanpa tujuan dampak.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
+                                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase">Mindset Inovator / Creator</span>
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-1">"Masalah nyata manusia apa yang ingin saya selesaikan?"</p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Berfokus pada kebutuhan pengguna (User-Centered) dan kebermanfaatan (Maslahah).</p>
+                                </div>
+                            </div>
+
+                            <h3 class="font-bold text-base mb-4 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-spin text-emerald-500"></i> Framework Design Thinking Pendidikan
+                            </h3>
+
+                            <!-- Interactive Stepper -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center text-xs">
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">1. MASALAH</span>
+                                    <span class="text-[10px]">Identifikasi Isu</span>
+                                </div>
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">2. OBSERVASI</span>
+                                    <span class="text-[10px]">Empati Pengguna</span>
+                                </div>
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">3. ANALISIS</span>
+                                    <span class="text-[10px]">Pemetaan Data</span>
+                                </div>
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">4. IDEASI</span>
+                                    <span class="text-[10px]">Solusi Kreatif</span>
+                                </div>
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">5. PROTOTYPE</span>
+                                    <span class="text-[10px]">Rancang UI/UX</span>
+                                </div>
+                                <div onclick="sfx.playClick()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500 hover:text-white transition-all cursor-pointer border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold block text-emerald-600 dark:text-emerald-400">6. UJI & INOVASI</span>
+                                    <span class="text-[10px]">Evaluasi Nyata</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real Case Solution Card -->
+                        <div class="p-5 rounded-2xl bg-gradient-to-r from-teal-900 to-slate-900 text-white shadow-md">
+                            <h3 class="font-bold text-base mb-2 flex items-center gap-2 text-teal-300">
+                                <i class="fa-solid fa-lightbulb"></i> Implementasi Solusi: Islamic Learning Center
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-xs">
+                                <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                    <i class="fa-solid fa-book-open text-emerald-400 text-lg mb-1 block"></i>
+                                    <span class="font-bold block">Modul Digital</span>
+                                    <span class="text-[11px] text-slate-300">Materi tersetruktur terpadu.</span>
+                                </div>
+                                <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                    <i class="fa-solid fa-video text-indigo-400 text-lg mb-1 block"></i>
+                                    <span class="font-bold block">Video Pembelajaran</span>
+                                    <span class="text-[11px] text-slate-300">Visualisasi multimedia interaktif.</span>
+                                </div>
+                                <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                    <i class="fa-solid fa-pen-to-square text-amber-400 text-lg mb-1 block"></i>
+                                    <span class="font-bold block">Latihan & Quiz</span>
+                                    <span class="text-[11px] text-slate-300">Uji pemahaman adaptif.</span>
+                                </div>
+                                <div class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                    <i class="fa-solid fa-robot text-teal-400 text-lg mb-1 block"></i>
+                                    <span class="font-bold block">AI Tutor 24/7</span>
+                                    <span class="text-[11px] text-slate-300">Pendamping belajar mandiri.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab3",
+                badge: "BAGIAN 3",
+                title: "UI/UX & Arsitektur Website Modern",
+                icon: "fa-compass-drafting",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                Prinsip Utama UI/UX Menurut Steve Krug & Don Norman
+                            </h2>
+                            <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 mb-4">
+                                Website yang baik bukan hanya indah secara estetika visual (UI), tetapi harus intuitif dan tidak menyulitkan beban kognitif pengguna (UX).
+                            </p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                                    <span class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold text-sm mb-2">1</span>
+                                    <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">User First</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pahami kebutuhan Mahasiswa, Guru/Dosen, Orang Tua, dan Santri secara tersegmentasi.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                                    <span class="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center font-bold text-sm mb-2">2</span>
+                                    <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">Don't Make Me Think</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Prinsip Steve Krug: Navigasi harus jelas seketika tanpa memerlukan analisis berlebih.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                                    <span class="w-8 h-8 rounded-lg bg-teal-500 text-white flex items-center justify-center font-bold text-sm mb-2">3</span>
+                                    <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">Accessibility (Inklusivitas)</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dapat diakses lancar di smartphone murah, koneksi lambat, serta difabel.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wireframe Simulator -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-3 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-emerald-500"></i> Anatomi Struktur Layout Website Pendidikan
+                            </h3>
+                            <div class="p-4 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 space-y-2 bg-slate-100/50 dark:bg-slate-800/30 font-mono text-xs">
+                                <!-- Mock Header -->
+                                <div class="p-2 bg-emerald-600 text-white rounded-lg flex justify-between items-center">
+                                    <span class="font-bold"><i class="fa-solid fa-heading"></i> HEADER: Logo | Menu Utama | Pencarian</span>
+                                    <span class="text-[10px] bg-emerald-700 px-2 py-0.5 rounded">Fixed Nav</span>
+                                </div>
+
+                                <!-- Mock Hero / Content -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <div class="md:col-span-2 p-4 bg-slate-200 dark:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200">
+                                        <p class="font-bold mb-1"><i class="fa-solid fa-newspaper"></i> HERO & KONTEN UTAMA</p>
+                                        <p class="text-[11px] opacity-80">Banner Informasi Akademik, Artikel Unggulan, Modul OBE, Call to Action (CTA).</p>
+                                    </div>
+                                    <div class="p-4 bg-slate-200 dark:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-200">
+                                        <p class="font-bold mb-1"><i class="fa-solid fa-sidebar"></i> SIDEBAR LAYANAN</p>
+                                        <p class="text-[11px] opacity-80">Pengumuman, Portal SIAKAD, Repository Kitab, Contact Admin.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Mock Footer -->
+                                <div class="p-2 bg-slate-800 text-slate-300 rounded-lg text-center">
+                                    <p class="font-bold"><i class="fa-solid fa-shoe-prints"></i> FOOTER: Hak Cipta | Peta Situs | Regulasi & Social Media</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab4",
+                badge: "BAGIAN 4",
+                title: "Website & Artificial Intelligence (AI)",
+                icon: "fa-robot",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                Pergeseran Paradigma: Augmented Intelligence
+                            </h2>
+                            <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Dulu, manusia mengoding website baris demi baris secara manual. Sekarang, manusia bekerja bersama AI (Augmented Intelligence) untuk membangun ekosistem digital secara jauh lebih cepat dan presisi.
+                            </p>
+
+                            <!-- AI Framework Visualizer -->
+                            <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-900/30 via-slate-900 to-indigo-900/30 border border-emerald-500/30 text-center">
+                                <div class="flex items-center justify-center gap-3 text-sm font-bold text-white mb-3">
+                                    <span class="px-3 py-1 bg-emerald-600 rounded-lg">HUMAN (Kreativitas & Nilai Islam)</span>
+                                    <i class="fa-solid fa-plus text-emerald-400"></i>
+                                    <span class="px-3 py-1 bg-indigo-600 rounded-lg">AI (Otomasi & Kecepatan)</span>
+                                </div>
+                                <div class="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-arrow-down block my-1"></i>
+                                    AUGMENTED INTELLIGENCE INOVASI PENDIDIKAN
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Practical AI Use Cases -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-3 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-emerald-500"></i> Peran AI Dalam Pengembangan Web
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                    <i class="fa-solid fa-pen-nib text-emerald-500 text-base mb-1 block"></i>
+                                    <span class="font-bold text-slate-800 dark:text-slate-100 block">Generator Konten & Artikel</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Menyusun draft rujukan ilmiah dan materi perkuliahan secara terstruktur.</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                    <i class="fa-solid fa-code text-indigo-500 text-base mb-1 block"></i>
+                                    <span class="font-bold text-slate-800 dark:text-slate-100 block">AI Code Assistant</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Membantu penulisan HTML, Tailwind CSS, dan script interaktif tanpa error.</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                    <i class="fa-solid fa-comments text-teal-500 text-base mb-1 block"></i>
+                                    <span class="font-bold text-slate-800 dark:text-slate-100 block">Smart Chatbot Virtual</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Layanan konsultasi akademik 24 jam untuk santri/mahasiswa.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab5",
+                badge: "BAGIAN 5",
+                title: "Digital Marketing, SEO & Visibility",
+                icon: "fa-chart-line",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                Ekosistem Kehadiran Digital
+                            </h2>
+                            <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Website bukan pulau terisolasi. Website adalah pusat gravitasi dari seluruh ekosistem komunikasi digital institusi.
+                            </p>
+
+                            <!-- Marketing Wheel Visual -->
+                            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-center my-3 text-xs">
+                                <div class="flex flex-wrap items-center justify-center gap-2 font-bold text-slate-700 dark:text-slate-200">
+                                    <span class="px-3 py-1.5 bg-rose-500 text-white rounded-lg"><i class="fa-brands fa-instagram"></i> Media Sosial</span>
+                                    <i class="fa-solid fa-arrow-right text-emerald-500"></i>
+                                    <span class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg"><i class="fa-solid fa-globe"></i> Website Utama</span>
+                                    <i class="fa-solid fa-arrow-right text-emerald-500"></i>
+                                    <span class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg"><i class="fa-solid fa-shield-halved"></i> Trust & Kredibilitas</span>
+                                    <i class="fa-solid fa-arrow-right text-emerald-500"></i>
+                                    <span class="px-3 py-1.5 bg-teal-600 text-white rounded-lg"><i class="fa-solid fa-hands-holding-child"></i> Kebermanfaatan Ummah</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SEO Core Web Vitals Card -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-3 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass-chart text-emerald-500"></i> Standar Google Core Web Vitals (SEO)
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block mb-1">LCP (Largest Contentful Paint)</span>
+                                    <p class="text-slate-600 dark:text-slate-300">Kecepatan muat konten utama website. Target standar internasional: <strong>&lt; 2.5 detik</strong>.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800">
+                                    <span class="font-bold text-indigo-600 dark:text-indigo-400 block mb-1">INP (Interaction to Next Paint)</span>
+                                    <p class="text-slate-600 dark:text-slate-300">Responsivitas interaksi tombol dan menu. Target standar: <strong>&lt; 200 milidetik</strong>.</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-800">
+                                    <span class="font-bold text-teal-600 dark:text-teal-400 block mb-1">CLS (Cumulative Layout Shift)</span>
+                                    <p class="text-slate-600 dark:text-slate-300">Stabilitas tampilan visual tanpa elemen tergeser tak sengaja. Target: <strong>&lt; 0.1</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "bab6",
+                badge: "BAGIAN 6",
+                title: "Etika, Keamanan & Regulasi Digital",
+                icon: "fa-shield-halved",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <!-- Tauhidic Technology Framework -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-scale-balanced text-emerald-500"></i> Integrasi Tauhid & Teknologi (Fiqih Informasi)
+                            </h2>
+                            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-center my-2 text-xs">
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-2 font-bold text-slate-700 dark:text-slate-200">
+                                    <span class="px-3 py-1 bg-emerald-600 text-white rounded">TAUHID</span>
+                                    <i class="fa-solid fa-chevron-right hidden md:inline text-emerald-500"></i>
+                                    <span class="px-3 py-1 bg-teal-600 text-white rounded">ILMU</span>
+                                    <i class="fa-solid fa-chevron-right hidden md:inline text-emerald-500"></i>
+                                    <span class="px-3 py-1 bg-indigo-600 text-white rounded">AMANAH</span>
+                                    <i class="fa-solid fa-chevron-right hidden md:inline text-emerald-500"></i>
+                                    <span class="px-3 py-1 bg-slate-700 text-white rounded">TEKNOLOGI & KEMASLAHATAN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hadits Foundation -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase"><i class="fa-solid fa-book"></i> Landasan Hadits I: Inovasi Dunia</span>
+                                <blockquote class="text-sm font-semibold text-slate-800 dark:text-slate-100 my-2 font-serif">
+                                    "أَنْتُمْ أَعْلَمُ بِأَمْرِ دُنْيَاكُمْ"
+                                </blockquote>
+                                <p class="text-xs text-slate-600 dark:text-slate-300">"Kalian lebih mengetahui urusan dunia kalian." (HR. Muslim)</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2"><strong>Makna:</strong> Islam memberikan ruang inovasi teknologis seluas-luasnya selama membawa kebaikan publik.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800">
+                                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase"><i class="fa-solid fa-user-shield"></i> Landasan Hadits II: Amanah Data</span>
+                                <blockquote class="text-sm font-semibold text-slate-800 dark:text-slate-100 my-2 font-serif">
+                                    "كُلُّكُمْ رَاعٍ وَكُلُّكُمْ مَسْئُولٌ عَنْ رَعِيَّتِهِ"
+                                </blockquote>
+                                <p class="text-xs text-slate-600 dark:text-slate-300">"Setiap kalian adalah pemimpin dan dimintai pertanggungjawaban." (HR. Bukhari & Muslim)</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2"><strong>Makna:</strong> Pengelola website bertanggung jawab penuh menjaga kerahasiaan data pengguna.</p>
+                            </div>
+                        </div>
+
+                        <!-- Regulasi Indonesia & OWASP -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-3 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-gavel text-emerald-500"></i> Regulasi Website Indonesia & Standar OWASP
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">UU PDP No. 27/2022</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Wajib melindungi privasi data pribadi siswa/mahasiswa dari kebocoran.</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold text-indigo-600 dark:text-indigo-400 block">UU ITE</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Aturan hukum transaksi elektronik, informasi publik, dan larangan hoaks.</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold text-teal-600 dark:text-teal-400 block">OWASP Top 10</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Standar keamanan dari serangan Injection, Broken Authentication, dan Malware.</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                                    <span class="font-bold text-amber-600 dark:text-amber-400 block">WCAG 2.2 AA</span>
+                                    <span class="text-slate-500 dark:text-slate-400">Pedoman aksesibilitas global agar web ramah difabel dan lansia.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "project",
+                badge: "PROJECT BASED LEARNING",
+                title: "Digital Transformation Final Project",
+                icon: "fa-rocket",
+                render: () => `
+                    <div class="max-w-4xl mx-auto space-y-6">
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                Misi Kelompok: Proyek Transformasi Digital Real-World
+                            </h2>
+                            <p class="text-xs md:text-sm text-slate-600 dark:text-slate-300 mb-4">
+                                Mahasiswa dibagi ke dalam kelompok untuk memilih 1 objek nyata (Sekolah, Masjid, Pesantren, Kampus, atau UMKM Halal) dan mentransformasikan kehadiran digitalnya selama 6 minggu.
+                            </p>
+
+                            <!-- 6 Weeks Roadmap Visualizer -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center text-xs">
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">M-1</span>
+                                    <span>Research Masalah</span>
+                                </div>
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">M-2</span>
+                                    <span>User Analysis</span>
+                                </div>
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">M-3</span>
+                                    <span>Wireframing</span>
+                                </div>
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">M-4</span>
+                                    <span>Prototype UI/UX</span>
+                                </div>
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400 block">M-5</span>
+                                    <span>Dev & AI Content</span>
+                                </div>
+                                <div class="p-3 bg-emerald-600 text-white rounded-xl font-bold">
+                                    <span class="block">M-6</span>
+                                    <span>Presentasi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rubrik Penilaian -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h3 class="font-bold text-base mb-3 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-emerald-500"></i> Rubrik Evaluasi & Penilaian Proyek (Total 100%)
+                            </h3>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between p-2 rounded bg-slate-100 dark:bg-slate-800">
+                                    <span>Analisis Masalah & Empati Pengguna</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">20%</span>
+                                </div>
+                                <div class="flex justify-between p-2 rounded bg-slate-100 dark:bg-slate-800">
+                                    <span>Kualitas UX Design & Inklusivitas Aksesibilitas</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">20%</span>
+                                </div>
+                                <div class="flex justify-between p-2 rounded bg-slate-100 dark:bg-slate-800">
+                                    <span>Kreativitas Solusi & Integrasi AI Helper</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">20%</span>
+                                </div>
+                                <div class="flex justify-between p-2 rounded bg-slate-100 dark:bg-slate-800">
+                                    <span>Implementasi Prototyping Teruji</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">20%</span>
+                                </div>
+                                <div class="flex justify-between p-2 rounded bg-slate-100 dark:bg-slate-800">
+                                    <span>Presentasi & Pertanggungjawaban Etika</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400">20%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "quiz",
+                badge: "EVALUASI INTERAKTIF",
+                title: "Kuis Pemahaman & Sertifikasi",
+                icon: "fa-clipboard-question",
+                render: () => `
+                    <div class="max-w-2xl mx-auto space-y-6" id="quizWrapper">
+                        <!-- Quiz Header -->
+                        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-center">
+                            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-bold uppercase tracking-wider">
+                                10 Pertanyaan Evaluasi Materi
+                            </span>
+                            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mt-2">
+                                Uji Pemahaman Transformasi Digital
+                            </h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                Selesaikan kuis ini untuk menguji penguasaan pengetahuan dan standar peradaban digital Anda.
+                            </p>
+                        </div>
+
+                        <!-- Quiz Body Rendered dynamically -->
+                        <div id="quizContent"></div>
+                    </div>
+                `
+            }
+        ];
+
+        const quizQuestions = [
+            {
+                q: "Secara filosofis, website modern dalam perkuliahan ini dipahami sebagai...",
+                options: [
+                    "Kumpulan baris kode HTML statis tanpa dampak",
+                    "Infrastruktur peradaban yang menyatukan Ilmu, Bisnis, dan Sosial",
+                    "Media sosial untuk hiburan semata",
+                    "Aplikasi desktop tanpa koneksi jaringan"
+                ],
+                answer: 1,
+                explanation: "Website bukan sekadar halaman internet, melainkan sarana konvergensi ilmu, dakwah, dan peradaban digital."
+            },
+            {
+                q: "Manakah ciri utama dari perkembangan Web 4.0 (Intelligent Web)?",
+                options: [
+                    "Hanya menyajikan teks statis satu arah",
+                    "Awal bermula sosial media dan blog",
+                    "Integrasi AI otonom, personalisasi tingkat tinggi, dan otomasi cerdas",
+                    "Tidak memerlukan jaringan internet"
+                ],
+                answer: 2,
+                explanation: "Web 4.0 berfokus pada otomasi cerdas, personalisasi presisi, serta AI agent yang memahami kebutuhan pengguna."
+            },
+            {
+                q: "Apa perbedaan cara berpikir seorang 'Pemula' dengan seorang 'Inovator/Digital Creator'?",
+                options: [
+                    "Pemula bertanya 'Bagaimana cara koding?', Inovator bertanya 'Masalah manusia apa yang ingin diselesaikan?'",
+                    "Pemula berfokus pada pengguna, Inovator berfokus pada harga laptop",
+                    "Pemula menggunakan AI, Inovator menolak AI",
+                    "Tidak ada perbedaan sama sekali"
+                ],
+                answer: 0,
+                explanation: "Inovator berfokus pada pendekatan User-Centered dan pemecahan masalah nyata (Design Thinking)."
+            },
+            {
+                q: "Prinsip utama UX 'Don't Make Me Think' dicetuskan oleh pakar UI/UX ternama yaitu...",
+                options: [
+                    "Tim Berners-Lee",
+                    "Steve Krug",
+                    "Al-Khwarizmi",
+                    "Bill Gates"
+                ],
+                answer: 1,
+                explanation: "Steve Krug menulis buku terkenal 'Don't Make Me Think' mengenai kemudahan penggunaan navigasi web."
+            },
+            {
+                q: "Konsep kolaborasi harmonis antara kecerdasan manusia dan AI untuk inovasi dikenal dengan istilah...",
+                options: [
+                    "Augmented Intelligence",
+                    "Artificial Replacement",
+                    "Manual Processing",
+                    "Static Engineering"
+                ],
+                answer: 0,
+                explanation: "Augmented Intelligence menekankan bahwa AI hadir memperkuat (augment) nilai dan kreativitas manusia, bukan menggantikannya."
+            },
+            {
+                q: "Metrik Google Core Web Vitals yang mengukur kecepatan muat konten visual utama website adalah...",
+                options: [
+                    "LCP (Largest Contentful Paint)",
+                    "FID (First Input Delay)",
+                    "CLS (Cumulative Layout Shift)",
+                    "SEO Analytics"
+                ],
+                answer: 0,
+                explanation: "LCP mengukur waktu yang dibutuhkan untuk menampilkan elemen konten terbesar di layar (< 2.5 detik)."
+            },
+            {
+                q: "Hadits Rasulullah ﷺ 'أَنْتُمْ أَعْلَمُ بِأَمْرِ دُنْيَاكُمْ' (HR. Muslim) memberikan landasan filosofis bahwa...",
+                options: [
+                    "Islam melarang penggunaan teknologi modern",
+                    "Umat Islam terbuka lebar untuk berinovasi dalam sains dan teknologi demi kebaikan",
+                    "Website tidak memiliki kaitan dengan agama",
+                    "Teknologi hanya untuk urusan ekonomi"
+                ],
+                answer: 1,
+                explanation: "Hadits ini memberikan kebebasan dan dorongan bagi umat Islam untuk menguasai serta berinovasi dalam urusan teknis keduniaan."
+            },
+            {
+                q: "Undang-Undang di Indonesia yang secara khusus mengatur tentang Perlindungan Data Pribadi pengguna website adalah...",
+                options: [
+                    "UU PDP No. 27 Tahun 2022",
+                    "UU Hak Cipta No. 28 Tahun 2014",
+                    "UU Ketenagakerjaan",
+                    "UU Pendidikan Nasional"
+                ],
+                answer: 0,
+                explanation: "UU No. 27 Tahun 2022 mengatur kewajiban penyelenggara sistem elektronik dalam menjaga integritas data pribadi."
+            },
+            {
+                q: "Standar internasional aksesibilitas web agar ramah bagi penyandang disabilitas dan lansia adalah...",
+                options: [
+                    "WCAG 2.2 (Web Content Accessibility Guidelines)",
+                    "OWASP Top 10",
+                    "W3C HTML Standard",
+                    "Google Core Vitals"
+                ],
+                answer: 0,
+                explanation: "WCAG merumuskan standar inklusivitas web agar semua lapisan masyarakat dapat mengakses informasi secara adil."
+            },
+            {
+                q: "Apa nama standar acuan keamanan web dunia untuk memproteksi dari serangan kejahatan siber?",
+                options: [
+                    "OWASP Top 10",
+                    "ISO 9001",
+                    "UNESCO ICT",
+                    "Design Thinking"
+                ],
+                answer: 0,
+                explanation: "OWASP (Open Web Application Security Project) menyediakan acuan 10 kerentanan keamanan web teratas."
+            }
+        ];
+
+        let currentModuleIndex = 0;
+        let quizCurrentQuestion = 0;
+        let quizAnswers = new Array(quizQuestions.length).fill(null);
+        let isDarkMode = true;
+
+        // DOM Elements
+        const moduleContainer = document.getElementById('moduleContainer');
+        const navMenuList = document.getElementById('navMenuList');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+        const currentModuleBadge = document.getElementById('currentModuleBadge');
+        const currentModuleTitle = document.getElementById('currentModuleTitle');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Initialize Navigation List
+        function initNav() {
+            navMenuList.innerHTML = '';
+            modulesData.forEach((mod, idx) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => {
+                    sfx.playTab();
+                    goModule(idx);
+                    if (window.innerWidth < 768) toggleSidebar();
+                };
+                btn.className = `w-full text-left p-3 rounded-xl flex items-center space-x-3 transition-all cursor-pointer ${
+                    idx === currentModuleIndex 
+                        ? 'bg-emerald-500 text-white font-bold shadow-md shadow-emerald-500/20' 
+                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                }`;
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm ${idx === currentModuleIndex ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}">
+                        <i class="fa-solid ${mod.icon}"></i>
+                    </div>
+                    <div class="truncate flex-1">
+                        <span class="text-[10px] opacity-75 uppercase block leading-none font-bold">${mod.badge}</span>
+                        <span class="text-xs truncate block font-semibold">${mod.title}</span>
+                    </div>
+                `;
+                navMenuList.appendChild(btn);
+            });
+        }
+
+        // Render Active Module View
+        function renderModule() {
+            const mod = modulesData[currentModuleIndex];
+            
+            // Update Top Header Progress
+            const pct = ((currentModuleIndex + 1) / modulesData.length) * 100;
+            progressBar.style.width = `${pct}%`;
+            progressText.innerText = `Bab ${currentModuleIndex + 1}/${modulesData.length}`;
+
+            // Update Footer Title
+            currentModuleBadge.innerText = mod.badge;
+            currentModuleTitle.innerText = mod.title;
+
+            // Enable/Disable Nav Buttons
+            prevBtn.disabled = currentModuleIndex === 0;
+            if (currentModuleIndex === modulesData.length - 1) {
+                nextBtn.classList.add('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+            }
+
+            // Inject HTML Content
+            moduleContainer.innerHTML = mod.render();
+
+            // Special Setup for Quiz Module
+            if (mod.id === 'quiz') {
+                renderQuiz();
+            }
+
+            // Scroll container inner to top
+            moduleContainer.scrollTop = 0;
+
+            // Re-render Nav Sidebar active states
+            initNav();
+        }
+
+        function goModule(idx) {
+            currentModuleIndex = idx;
+            renderModule();
+        }
+
+        function nextModule() {
+            if (currentModuleIndex < modulesData.length - 1) {
+                sfx.playClick();
+                currentModuleIndex++;
+                renderModule();
+            }
+        }
+
+        function prevModule() {
+            if (currentModuleIndex > 0) {
+                sfx.playClick();
+                currentModuleIndex--;
+                renderModule();
+            }
+        }
+
+        function renderQuiz() {
+            const quizContainer = document.getElementById('quizContent');
+            if (!quizContainer) return;
+
+            if (quizCurrentQuestion >= quizQuestions.length) {
+                // Show Result Screen
+                let score = 0;
+                quizAnswers.forEach((ans, idx) => {
+                    if (ans === quizQuestions[idx].answer) score++;
+                });
+
+                const percentage = Math.round((score / quizQuestions.length) * 100);
+                let badgeTitle = percentage >= 80 ? "Arsitek Peradaban Digital" : percentage >= 60 ? "Praktisi Literasi Digital" : "Pembelajar Pembuka";
+
+                quizContainer.innerHTML = `
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-4">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white text-3xl shadow-lg shadow-emerald-500/30 animate-subtle">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Hasil Evaluasi Akhir</span>
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-slate-100 mt-1">${percentage}% Skor Pengetahuan</h3>
+                            <p class="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-1">Gelar Capaian: ${badgeTitle}</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300">
+                            Anda telah berhasil menjawab <strong>${score}</strong> dari <strong>${quizQuestions.length}</strong> pertanyaan dengan tepat.
+                        </div>
+                        <button onclick="resetQuiz()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all shadow-md">
+                            <i class="fa-solid fa-rotate-left mr-2"></i> Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+                sfx.playSuccess();
+                return;
+            }
+
+            const q = quizQuestions[quizCurrentQuestion];
+            const selectedAns = quizAnswers[quizCurrentQuestion];
+
+            quizContainer.innerHTML = `
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-emerald-600 dark:text-emerald-400">Pertanyaan ${quizCurrentQuestion + 1} / ${quizQuestions.length}</span>
+                        <span class="text-slate-400 font-mono">${Math.round(((quizCurrentQuestion + 1)/quizQuestions.length)*100)}%</span>
+                    </div>
+
+                    <h3 class="font-bold text-sm md:text-base text-slate-800 dark:text-slate-100">
+                        ${q.q}
+                    </h3>
+
+                    <div class="space-y-2">
+                        ${q.options.map((opt, oIdx) => `
+                            <button onclick="selectAnswer(${oIdx})" class="w-full text-left p-3 rounded-xl border text-xs md:text-sm font-medium transition-all flex items-center justify-between cursor-pointer ${
+                                selectedAns === oIdx 
+                                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold' 
+                                    : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200'
+                            }">
+                                <span>${String.fromCharCode(65 + oIdx)}. ${opt}</span>
+                                ${selectedAns === oIdx ? '<i class="fa-solid fa-circle-check text-emerald-500"></i>' : ''}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    ${selectedAns !== null ? `
+                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-xs text-slate-600 dark:text-slate-300 border-l-4 border-emerald-500">
+                            <strong>Fakta & Penjelasan:</strong> ${q.explanation}
+                        </div>
+                    ` : ''}
+
+                    <div class="flex justify-between pt-2">
+                        <button onclick="prevQuiz()" ${quizCurrentQuestion === 0 ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-semibold disabled:opacity-30">
+                            Kembali
+                        </button>
+                        <button onclick="nextQuiz()" ${selectedAns === null ? 'disabled' : ''} class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold disabled:opacity-40 shadow-sm">
+                            ${quizCurrentQuestion === quizQuestions.length - 1 ? 'Selesai & Lihat Skor' : 'Lanjut <i class="fa-solid fa-arrow-right ml-1"></i>'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAnswer(oIdx) {
+            quizAnswers[quizCurrentQuestion] = oIdx;
+            const q = quizQuestions[quizCurrentQuestion];
+            if (oIdx === q.answer) {
+                sfx.playSuccess();
+            } else {
+                sfx.playError();
+            }
+            renderQuiz();
+        }
+
+        function nextQuiz() {
+            if (quizAnswers[quizCurrentQuestion] !== null) {
+                sfx.playClick();
+                quizCurrentQuestion++;
+                renderQuiz();
+            }
+        }
+
+        function prevQuiz() {
+            if (quizCurrentQuestion > 0) {
+                sfx.playClick();
+                quizCurrentQuestion--;
+                renderQuiz();
+            }
+        }
+
+        function resetQuiz() {
+            sfx.playClick();
+            quizCurrentQuestion = 0;
+            quizAnswers = new Array(quizQuestions.length).fill(null);
+            renderQuiz();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            sidebar.classList.toggle('-translate-x-full');
+            backdrop.classList.toggle('hidden');
+        }
+
+        function toggleDarkMode() {
+            sfx.playClick();
+            isDarkMode = !isDarkMode;
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (isDarkMode) {
+                html.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-moon text-sm';
+                showToast("Dark Mode Aktif", "fa-moon");
+            } else {
+                html.classList.remove('dark');
+                themeIcon.className = 'fa-solid fa-sun text-sm text-amber-500';
+                showToast("Light Mode Aktif", "fa-sun");
+            }
+        }
+
+        function toggleSound() {
+            sfx.enabled = !sfx.enabled;
+            const soundIcon = document.getElementById('soundIcon');
+            if (sfx.enabled) {
+                soundIcon.className = 'fa-solid fa-volume-high text-sm text-emerald-500';
+                sfx.playClick();
+                showToast("Efek Suara Diaktifkan", "fa-volume-high");
+            } else {
+                soundIcon.className = 'fa-solid fa-volume-xmark text-sm text-slate-400';
+                showToast("Efek Suara Dimatikan", "fa-volume-xmark");
+            }
+        }
+
+        function showToast(msg, icon = "fa-circle-check") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            toastMsg.innerText = msg;
+            toastIcon.className = `fa-solid ${icon} text-emerald-400 dark:text-white text-base`;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }, 2500);
+        }
+
+        // Initialize App on DOM Load
+        window.onload = () => {
+            initNav();
+            renderModule();
+        };
+    </script>
+</body>
+</html>
